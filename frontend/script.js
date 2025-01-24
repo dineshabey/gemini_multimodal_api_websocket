@@ -6,7 +6,9 @@ window.addEventListener("load", (event) => {
 });
 
 // const PROXY_URL = "ws://localhost:8080";
-const PROXY_URL = "wss://3.21.98.219:8080";
+// const PROXY_URL = "wss://3.21.98.219:8080";
+const PROXY_URL = "wss://c03b-3-21-98-219.ngrok-free.app";
+
 const PROJECT_ID = "physician-ai-chat-project-v3";
 const MODEL = "gemini-2.0-flash-exp";
 const API_HOST = "us-central1-aiplatform.googleapis.com";
