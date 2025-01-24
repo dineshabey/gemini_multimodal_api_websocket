@@ -6,7 +6,7 @@ window.addEventListener("load", (event) => {
 });
 
 const PROXY_URL = "ws://localhost:8080";
-const PROJECT_ID = "physician-ai-chat-project";
+const PROJECT_ID = "physician-ai-chat-project-v3";
 const MODEL = "gemini-2.0-flash-exp";
 const API_HOST = "us-central1-aiplatform.googleapis.com";
 
