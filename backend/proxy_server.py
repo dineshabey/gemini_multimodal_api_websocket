@@ -119,12 +119,12 @@ async def main() -> None:
     """
     Starts the WebSocket server and listens for incoming client connections.
     """
-    print("Starting WebSocket proxy server on ws://localhost:8080...")
+    print("Starting WebSocket proxy server on ws://0.0.0.0:8080...")
     # async with websockets.serve(handle_client, "localhost", 8080):
     async with websockets.serve(handle_client, "0.0.0.0", 8080):
 
         
-        print("WebSocket proxy server running on ws://localhost:8080...")
+        print("WebSocket proxy server running on ws://0.0.0.0:8080...")
         # Keep the server running forever
         await asyncio.Future()
 
