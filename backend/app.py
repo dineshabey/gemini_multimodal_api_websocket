@@ -1,5 +1,6 @@
 import asyncio
 import json
+import ssl
 import websockets
 from websockets.legacy.protocol import WebSocketCommonProtocol
 from websockets.legacy.server import WebSocketServerProtocol
@@ -9,6 +10,10 @@ HOST = "us-central1-aiplatform.googleapis.com"
 SERVICE_URL = f"wss://{HOST}/ws/google.cloud.aiplatform.v1beta1.LlmBidiService/BidiGenerateContent"
 
 DEBUG = True  # Set to True for verbose logging
+
+# Load SSL certificate and private key
+ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+ssl_context.load_cert_chain(certfile="server.crt", keyfile="server.key")
 
 
 async def proxy_task(
@@ -60,6 +65,7 @@ async def create_proxy(
         async with websockets.connect(
             SERVICE_URL, extra_headers=headers
         ) as server_websocket:
+            print("Connected to Gemini API WebSocket.")
             client_to_server_task = asyncio.create_task(
                 proxy_task(client_websocket, server_websocket)
             )
@@ -119,9 +125,9 @@ async def main() -> None:
     """
     Starts the WebSocket server and listens for incoming client connections.
     """
-    print("Starting WebSocket proxy server on ws://0.0.0.0:8080...")
-    async with websockets.serve(handle_client, "0.0.0.0", 8080):
-        print("WebSocket proxy server running on ws://0.0.0.0:8080...")
+    print("Starting WebSocket proxy server on wss://0.0.0.0:8080...")
+    async with websockets.serve(handle_client, "0.0.0.0", 8080, ssl=ssl_context):
+        print("WebSocket proxy server running on wss://0.0.0.0:8080...")
         # Keep the server running forever
         await asyncio.Future()
 
