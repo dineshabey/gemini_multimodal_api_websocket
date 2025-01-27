@@ -44,9 +44,16 @@ class CookieJar {
      * @param {number} [days=365] - The number of days until the cookie expires. Defaults to 365.
      */
     static setCookie(name, value, days = 365) {
+        if (!name || !value) {
+            console.error('❌ Cookie name and value are required.');
+            return;
+        }
+
         const expires = new Date();
         expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
-        document.cookie = `${name}=${encodeURIComponent(value)};expires=${expires.toUTCString()};path=/`;
+
+        // Set cookie with Secure and HttpOnly flags
+        document.cookie = `${name}=${encodeURIComponent(value)};expires=${expires.toUTCString()};path=/;Secure;HttpOnly`;
         console.log(`🍪 Cookie '${name}' set successfully!`);
     }
 
@@ -59,7 +66,29 @@ class CookieJar {
      * @returns {string|null} The value of the cookie if found, otherwise null.
      */
     static getCookie(name) {
+        if (!name) {
+            console.error('❌ Cookie name is required.');
+            return null;
+        }
+
         const cookieValue = document.cookie.match(`(^|;)\\s*${name}\\s*=\\s*([^;]+)`);
         return cookieValue ? decodeURIComponent(cookieValue.pop()) : null;
+    }
+
+    /**
+     * @static
+     * @method deleteCookie
+     * @memberof CookieJar
+     * @description Deletes a cookie by setting its expiration date to the past.
+     * @param {string} name - The name of the cookie to delete.
+     */
+    static deleteCookie(name) {
+        if (!name) {
+            console.error('❌ Cookie name is required.');
+            return;
+        }
+
+        document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;Secure;HttpOnly`;
+        console.log(`🍪 Cookie '${name}' deleted successfully!`);
     }
 }
